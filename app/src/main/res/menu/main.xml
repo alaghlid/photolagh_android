@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_downloads"
+        android:icon="@drawable/downloads24"
+        android:iconTint="@color/cardview_light_background"
+        android:orderInCategory="100"
+        android:title="Téléchargements/photolagh"
+        app:showAsAction="ifRoom" />
+</menu>

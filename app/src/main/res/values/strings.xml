@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PHOTOLAGH</string>
+    <string name="rechercher_des_photos">Rechercher des photos</string>
+    <string name="Favoris">Favoris</string>
+</resources>

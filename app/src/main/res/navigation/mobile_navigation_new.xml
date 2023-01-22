@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_new"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.applicationgestionphotos_laghlid.view.HomeFragment"
+        android:label="Accueil"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.applicationgestionphotos_laghlid.view.SearchFragment"
+        android:label="@string/rechercher_des_photos"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/nav_favorites"
+        android:name="com.example.applicationgestionphotos_laghlid.view.FavoritesFragment"
+        android:label="@string/Favoris"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.applicationgestionphotos_laghlid.view.SettingsFragment"
+        android:label="Paramètres"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.example.applicationgestionphotos_laghlid.view.AboutFragment"
+        android:label="A propos"
+        tools:layout="@layout/fragment_about" />
+
+</navigation>
+
