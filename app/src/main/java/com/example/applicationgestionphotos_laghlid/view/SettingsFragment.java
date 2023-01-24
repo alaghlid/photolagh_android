@@ -23,6 +23,10 @@ import com.example.applicationgestionphotos_laghlid.R;
  * 5A ASL
  **/
 
+//  Ce fragment permet à l'utilisateur de configurer des paramètres dans l'application :
+//  Activer ou désactiver le dark mode, les vibrations lors des cliques sur le boutton de favoris, boutton de rafraîchissemnt et les notifications à la fin du téléchargement d'une photo
+//  On utilise les SharedPreferences pour enregistrer les paramètres de l'utilisateur et les rappeler lorsque le fragment est réouvert
+//  Les Switch pour permettre à l'utilisateur de basculer entre On/Off
 public class SettingsFragment extends Fragment {
     private Switch themeSwitch;
     private Switch vibrateSwitch;

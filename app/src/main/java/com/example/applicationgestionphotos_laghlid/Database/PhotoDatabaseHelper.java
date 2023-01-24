@@ -18,9 +18,15 @@ import java.util.List;
  * 5A ASL
  **/
 
+//  Classe utilisée pour gérer la base de données SQLite pour les photos favorites (Ajout et suppression)
+
 public class PhotoDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "photos.db";
+    // Les constantes nécessaires pour la création et la mise à jour de la table de photos favoris
+    // nom et la version de la base de données
     private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "photos.db";
+
+    // Les colonnes de la photo
     private static final String TABLE_NAME = "favorites";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_URL = "url";
@@ -34,6 +40,7 @@ public class PhotoDatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //  Méthode pour créer la table des favoris dans la base de données
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + "(" +
@@ -46,12 +53,14 @@ public class PhotoDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTable);
     }
 
+    //  Méthode pour mettre à jour la base de données en supprimant la table des favoris existante et en créant une nouvelle table
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 
+    //  Méthode pour ajouter une photo à la table de photos favoris en utilisant les informations de la photo passée en paramètre
     public boolean addPhoto(Photo photo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -65,20 +74,25 @@ public class PhotoDatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    //  Méthode pour supprimer une photo de la table de photos favoris en utilisant l'ID de la photo passée en paramètre
     public void deletePhoto(Photo photo) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[] { String.valueOf(photo.getId()) });
         db.close();
     }
 
+    //  Méthode pour vérifier si une photo existe déjà dans la table de photos favoris en utilisant l'ID de la photo passée en paramètre
     public boolean isExistsPhoto(Photo photo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[] { String.valueOf(photo.getId()) });
+                SQLiteDatabase db = this.getWritableDatabase();
+                Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = ?", new String[] { String.valueOf(photo.getId()) });
         boolean exists = (cursor.getCount() > 0);
-        cursor.close();
+                cursor.close();
         return exists;
     }
 
+    //  Méthode pour récupèrer toutes les photos de la table de photos favoris et les retourner sous forme de liste de photos
+    //  Cette liste de photos est utilisé par les adapters pour affichées les éléments
+    //  Soit dans RecyclerView pour les favoris ou dans la listeView pour l'acceuil et la recherche
     public List<Photo> getAllPhotos() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
@@ -93,6 +107,7 @@ public class PhotoDatabaseHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range") String server = cursor.getString(cursor.getColumnIndex(COLUMN_SERVER));
                 @SuppressLint("Range") String secret = cursor.getString(cursor.getColumnIndex(COLUMN_SECRET));
 
+                // Ajout de tous les objets photo dans photos
                 photos.add(new Photo(title, farm, server, id, secret));
             } while (cursor.moveToNext());
         }

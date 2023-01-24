@@ -18,12 +18,12 @@ import androidx.fragment.app.Fragment;
 import com.example.applicationgestionphotos_laghlid.Adapters.PhotoAdapter;
 import com.example.applicationgestionphotos_laghlid.Model.Photo;
 import com.example.applicationgestionphotos_laghlid.NetworkApi.PerformSearchTask;
-//import com.example.applicationgestionphotos_laghlid.view.ImageDetailsFragment;
 import com.example.applicationgestionphotos_laghlid.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 /**
@@ -32,6 +32,8 @@ import java.util.List;
  * 5A ASL
  **/
 
+//  Ce fragment est utilisé pour afficher les images récentes publiées sur Flickr
+//  Il utilise PerformSearchTask pour effectuer une recherche à l'aide de l'API Flickr, puis affiche les résultats dans une ListView à l'aide d'un adaptateur PhotoAdapter
 public class HomeFragment extends Fragment {
     private ListView listView;
     private PhotoAdapter adapter;
@@ -54,6 +56,9 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //  Le bouton flottant est pour but de recharger les images récentes
+        //  lorsqu'on clique sur ce bouton de rafraîchissement le téléphone peut vibrer en fonction des paramètres de l'application
+        //  (on peut désactiver la vibration sur le fragment Paramètres)
         refreshHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

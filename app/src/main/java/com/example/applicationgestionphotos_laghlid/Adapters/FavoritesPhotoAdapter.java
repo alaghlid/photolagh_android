@@ -30,66 +30,52 @@ import java.util.List;
  * 5A ASL
  **/
 
-//  Classe pour l'adapter de la liste des photos favoris (utilisé pour favoris)
+    //  Classe pour l'adapter de la liste des photos favoris (utilisé pour favoris)
+    //  Utilisation du RecyclerView pour la gestion des photos affichées dans favoris
 
 public class FavoritesPhotoAdapter extends RecyclerView.Adapter<FavoritesPhotoAdapter.FavoritesViewHolder> {
     private List<Photo> favoritesPhotos;
     private static Context context;
 
-    /**
-     * Constructeur de l'adapter
-     *
-     * @param context le contexte de l'application
-     * @param favoritesPhotos la liste des photos favoris
-     */
+
     public FavoritesPhotoAdapter(Context context, List<Photo> favoritesPhotos) {
+        // context le contexte de l'application
         this.context = context;
+
+        // la liste des photos favoris
         this.favoritesPhotos = favoritesPhotos;
     }
 
-    /**
-     * Méthode appelée pour créer un nouveau ViewHolder pour un élément de la liste
-     *
-     * @param parent le parent qui contiendra le ViewHolder créé
-     * @param viewType le type de vue (non utilisé dans ce cas)
-     * @return un nouveau ViewHolder pour un élément de la liste
-     */
+
+    // Méthode appelée pour créer un nouveau ViewHolder pour un élément de la liste
+    // parent est le parent qui contiendra le ViewHolder créé
     @NonNull
     @Override
     public FavoritesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Création de la vue pour chaque item de la liste
+        // Création de la vue pour chaque élément de la liste
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photo, parent, false);
 
         return new FavoritesViewHolder(view, favoritesPhotos, this);
     }
 
-    /**
-     * Méthode appelée pour remplir les données d'un ViewHolder pour un élément de la liste
-     *
-     * @param holder le ViewHolder à remplir
-     * @param position la position de l'élément dans la liste
-     */
+
+    // Méthode appelée pour remplir les données d'un ViewHolder pour un élément de la liste
+    // holder est le ViewHolder à remplir
+    // position la position de l'élément dans la liste
     @Override
     public void onBindViewHolder(@NonNull FavoritesViewHolder holder, int position) {
-        // Bind les données pour chaque item de la liste
         Photo photo = favoritesPhotos.get(position);
+        // Bind les données pour chaque élément de la liste
         holder.bind(photo);
     }
 
-    /**
-     * Méthode qui retourne le nombre d'éléments dans la liste
-     *
-     * @return le nombre d'éléments dans la liste
-     */
+    // Méthode qui retourne le nombre d'éléments dans la liste
     @Override
     public int getItemCount() {
         return favoritesPhotos.size();
     }
 
-    /**
-     * Classe interne pour le ViewHolder des éléments de la liste
-     *
-     */
+    // Classe interne pour le ViewHolder des éléments de la liste
     static class FavoritesViewHolder extends RecyclerView.ViewHolder {
         private ImageView photoPhoto;
         private ImageButton favoriteButton;
@@ -98,15 +84,12 @@ public class FavoritesPhotoAdapter extends RecyclerView.Adapter<FavoritesPhotoAd
         private FavoritesPhotoAdapter adapter;
         private ImageButton download_button;
 
-        /**
-         * Constructeur pour le ViewHolder
-         * @param itemView la vue de l'élément de la liste
-         * @param favouritesPhotos la liste des photos favoris
-         * @param adapter l'adapter de la liste
-         */
+        // itemView est la vue de l'élément de la liste
+        // favouritesPhotos est la liste des photos favoris
+        // adapter est l'adapter de la liste
         public FavoritesViewHolder(@NonNull View itemView,List<Photo> favouritesPhotos, FavoritesPhotoAdapter adapter) {
             super(itemView);
-            // Initialisation des vues pour chaque item
+            // Initialisation des vues pour chaque élément
             photoPhoto = itemView.findViewById(R.id.image_view);
             favoriteButton = itemView.findViewById(R.id.favorite_button);
             download_button = itemView.findViewById(R.id.download_button);
@@ -116,26 +99,26 @@ public class FavoritesPhotoAdapter extends RecyclerView.Adapter<FavoritesPhotoAd
         }
 
         public void bind(final Photo photo) {
-            // On charge l'image à partir de l'url de la photo
+            // On charge l'image à partir de l'url de la photo en utilisant la librairie Picasso
             Picasso.get().load(photo.getPhotoUrl()).into(photoPhoto);
 
-            // On ajoute la photo en tant que tag à l'image view pour une référence future (popup en utilisant le tag l'image cliquée)
+            // On ajoute la photo en tant que tag à l'image view pour une référence future (Popup utilise le tag l'image cliquée (voir MainActivity))
             photoPhoto.setTag(photo);
 
             // On définit le titre de la photo ( Si le titre est vide on le remplace par Sans titre au lieu de le laisser vide)
             titlePhoto.setText(photo.getTitle().equals("") ? "Sans Titre" : photo.getTitle());
 
-            // On définit l'icône de favori pour l'image
+            // La photo est en favoris donc on doit utilisé l'icon de favoris pleine
             favoriteButton.setImageResource(R.drawable.favori_24p);
 
-            // On ajoute un listener pour le bouton favori
+            // On ajoute un listener pour le bouton favoris pour intéragir avec la suppression des images de favoris
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // on récupère la position de l'item
+                    // on récupère la position de l'élément
                     int position = getAdapterPosition();
 
-                    // On récupère les préférences de l'application pour savoir si la vibration est activée lors de l'ajout aux favoris
+                    // On récupère les préférences de l'application pour savoir si la vibration est activée ou non (pour le clique sur le boutton des favoris des photos)
                     SharedPreferences sh = context.getSharedPreferences("Settings", MODE_PRIVATE);
                     boolean isVibratorOnFavorites = sh.getBoolean("isVibratorOnFavorites", false);
                     if (isVibratorOnFavorites) {
@@ -143,12 +126,10 @@ public class FavoritesPhotoAdapter extends RecyclerView.Adapter<FavoritesPhotoAd
                         vibrate.vibrate(200);
                     }
                     //  ici, on utilise la classe PhotoDatabaseHelper pour supprimer la photo de la base de données
-                    PhotoDatabaseHelper dbHelper = new PhotoDatabaseHelper(context);
-                    
                     //  on récupère une instance de la base de données en écriture
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-                    
                     //  on utilise la méthode deletePhoto pour supprimer la photo de la base de données
+                    PhotoDatabaseHelper dbHelper = new PhotoDatabaseHelper(context);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
                     dbHelper.deletePhoto(photo);
                     
                     //  on ferme la connexion à la base de données
@@ -157,14 +138,14 @@ public class FavoritesPhotoAdapter extends RecyclerView.Adapter<FavoritesPhotoAd
                     //  on supprime la photo de la liste des photos favorites
                     favoritesPhotos.remove(position);
 
-                    //  on utilise notifyItemRemoved pour notifier le RecyclerView qu'un élément a été supprimé
+                    //  on notifie le RecyclerView qu'un élément a été supprimé
                     adapter.notifyItemRemoved(position);
 
-                    //  on utilise notifyItemRangeChanged pour notifier le RecyclerView qu'il y a eu un changement sur tous les éléments à partir de la position de l'élément supprimé
+                    //  on notifie le RecyclerView qu'il y a eu un changement sur tous les éléments à partir de la position de l'élément supprimé
                     adapter.notifyItemRangeChanged(position, favoritesPhotos.size());
                 }
             });
-            //  on définit un listener sur le bouton de téléchargement
+            //  on définit un listener sur le bouton de téléchargement des photos
             download_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

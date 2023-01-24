@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import com.example.applicationgestionphotos_laghlid.R;
@@ -15,6 +14,9 @@ import com.example.applicationgestionphotos_laghlid.R;
  * 5A ASL
  **/
 
+//  C'est le fragment qui est utilisé pour afficher des informations de moi et de l'application
+//  La vue pour ce fragment est définie dans le fichier XML fragment_about (elle contient l'image des informations que j'ai fait)
+//  La méthode onCreateView est utilisée pour inflater la vue à partir de ce fichier XML et la retourner pour être affichée dans l'interface utilisateur
 public class AboutFragment extends Fragment {
 
     @Override

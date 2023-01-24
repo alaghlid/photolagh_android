@@ -25,6 +25,11 @@ import java.util.List;
  * 5A ASL
  **/
 
+//  Ce fragment est utilisé pour la recherche de photos à partir de l'API Flickr
+//  l'dapter utilisé est PhotoAdapter
+//  listView est utilisée pour afficher les résultats de la recherche
+//  la barre de recherche est utilisée pour saisir les tags de recherche
+//  performSearch est une tâche asynchrone pour effectuer la recherche en arrière-plan pour éviter de bloquer l'interface utilisateur
 public class SearchFragment extends Fragment {
     private ListView listView;
     private SearchView searchView;
@@ -41,6 +46,7 @@ public class SearchFragment extends Fragment {
         listView.setAdapter(adapter);
         performSearch("");
 
+        // Listners sur la barre de recherche pour la saisie et pour l'affichage des résultats de la recherche
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -71,6 +77,7 @@ public class SearchFragment extends Fragment {
         else Toast.makeText(getContext(), "Recherche effectuée !", Toast.LENGTH_SHORT).show();
     }
 
+    //  Nettoyer les résultats de la recherche lorsque le fragment est détruit ou lorsque l'utilisateur revient à ce fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -86,5 +93,4 @@ public class SearchFragment extends Fragment {
         searchView.clearFocus();
         Toast.makeText(getContext(), "Une nouvelle recherche ?", Toast.LENGTH_SHORT).show();
     }
-
 }
